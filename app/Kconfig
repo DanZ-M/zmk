@@ -101,23 +101,22 @@ config USB_NUMOF_EP_WRITE_RETRIES
     default 10
 
 config USB_HID_POLL_INTERVAL_MS
-    default 1
+	default 1
 
 config ZMK_USB_BOOT
-    bool "USB Boot Protocol Support"
-    default y
-    select USB_HID_BOOT_PROTOCOL
-    select USB_DEVICE_SOF
+	bool "USB Boot Protocol Support"
+	default y
+	select USB_HID_BOOT_PROTOCOL
+	select USB_DEVICE_SOF
 
 if ZMK_USB_BOOT
 
 # Declare boot keyboard interface
 config USB_HID_PROTOCOL_CODE
-    default 1
+	default 1
 
 #ZMK_USB_BOOT
 endif
-
 #ZMK_USB
 endif
 
@@ -129,7 +128,6 @@ menuconfig ZMK_BLE
     select BT_SMP_APP_PAIRING_ACCEPT
     select BT_PERIPHERAL
     select BT_DIS
-    select BT_BAS if !ZMK_SPLIT_ROLE_CENTRAL
     select BT_SETTINGS
     select SETTINGS
     imply ZMK_BATTERY_REPORTING
@@ -364,18 +362,17 @@ config ZMK_IDLE_SLEEP_TIMEOUT
 endif
 
 config ZMK_EXT_POWER
-    bool "Enable support to control external power output"
-    default y
+	bool "Enable support to control external power output"
+	default y
 
 if ZMK_EXT_POWER
 
 config ZMK_EXT_POWER_START
-    bool "Enable external power output by default"
-    default y
+	bool "Enable external power output by default"
+	default y
 
 #ZMK_EXT_POWER
 endif
-
 #Power Management
 endmenu
 
@@ -542,7 +539,7 @@ config ZMK_SETTINGS_SAVE_DEBOUNCE
 endif
 
 config ZMK_BATTERY_REPORT_INTERVAL
-    depends on ZMK_BLE
+    depends on ZMK_BATTERY_REPORTING
     int "Battery level report interval in seconds"
     default 60
 
