@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.13.1)
+changed textcmake_minimum_required(VERSION 3.13.1)
 
 set(CONFIG_APPLICATION_DEFINED_SYSCALL true)
 
@@ -44,6 +44,7 @@ target_sources(app PRIVATE src/behaviors/behavior_reset.c)
 target_sources_ifdef(CONFIG_ZMK_EXT_POWER app PRIVATE src/behaviors/behavior_ext_power.c)
 if ((NOT CONFIG_ZMK_SPLIT) OR CONFIG_ZMK_SPLIT_ROLE_CENTRAL)
   target_sources(app PRIVATE src/hid.c)
+  target_sources_ifdef(CONFIG_ZMK_USB app PRIVATE src/usb_hid.c)
   target_sources(app PRIVATE src/behaviors/behavior_key_press.c)
   target_sources_ifdef(CONFIG_ZMK_BEHAVIOR_KEY_TOGGLE app PRIVATE src/behaviors/behavior_key_toggle.c)
   target_sources(app PRIVATE src/behaviors/behavior_hold_tap.c)
@@ -74,6 +75,8 @@ if ((NOT CONFIG_ZMK_SPLIT) OR CONFIG_ZMK_SPLIT_ROLE_CENTRAL)
   target_sources(app PRIVATE src/events/layer_state_changed.c)
   target_sources(app PRIVATE src/events/modifiers_state_changed.c)
   target_sources(app PRIVATE src/events/keycode_state_changed.c)
+  target_sources(app PRIVATE src/led_indicators_generic.c)
+
 
   if (CONFIG_ZMK_BLE)
     target_sources(app PRIVATE src/events/ble_active_profile_changed.c)
@@ -83,11 +86,23 @@ if ((NOT CONFIG_ZMK_SPLIT) OR CONFIG_ZMK_SPLIT_ROLE_CENTRAL)
   endif()
 endif()
 
+if (CONFIG_ZMK_BLE) 
+  if (CONFIG_ZMK_SPLIT_ROLE_CENTRAL)
+	  target_sources(app PRIVATE src/battery_split.c)
+  else()
+    target_sources(app PRIVATE src/battery.c)
+  endif()
+endif()
+
 target_sources_ifdef(CONFIG_ZMK_RGB_UNDERGLOW app PRIVATE src/behaviors/behavior_rgb_underglow.c)
 target_sources_ifdef(CONFIG_ZMK_BACKLIGHT app PRIVATE src/behaviors/behavior_backlight.c)
 
 target_sources_ifdef(CONFIG_ZMK_BLE app PRIVATE src/events/battery_state_changed.c)
 target_sources_ifdef(CONFIG_ZMK_BLE app PRIVATE src/battery.c)
+
+target_sources(app PRIVATE src/events/led_indicator_changed.c)
+target_sources_ifdef(CONFIG_ZMK_LED_INDICATORS app PRIVATE src/led_indicators.c)
+
 
 target_sources_ifdef(CONFIG_ZMK_SPLIT app PRIVATE src/events/split_peripheral_status_changed.c)
 add_subdirectory(src/split)
